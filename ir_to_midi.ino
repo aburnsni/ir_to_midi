@@ -4,11 +4,15 @@
 const bool MYDEBUG = 1;
 
 //  Setup IR Receiver
-const int RECV_PIN = 9;
+const int RECV_PIN = 15;
 const int BLINK_PIN = 3;
 
 IRrecv irrecv(RECV_PIN, BLINK_PIN);
 decode_results results;
+
+// RX/TX pins
+const uint8_t TXLED = 30;
+const uint8_t RXLED = 17;
 
 // Setup MIDI output
 const uint8_t inputs = 12;
@@ -26,12 +30,15 @@ void keyPress(int key);
 void noteOn(byte channel, byte pitch, byte velocity);
 void noteOff(byte channel, byte pitch, byte velocity);
 
-void setup(){
+void setup() {
 
   // MIDI.begin();
   if (MYDEBUG) {
     Serial.begin(115200);
   }
+
+  pinMode(RXLED, INPUT);
+  pinMode(TXLED, INPUT);
 
   irrecv.enableIRIn();
   irrecv.blink13(true);
@@ -41,91 +48,91 @@ void setup(){
   }
 }
 
-void loop(){
-  if (irrecv.decode(&results)){
- 
-        // if (results.value == 0XFFFFFFFF)
-        //   results.value = key_value;
+void loop() {
+  if (irrecv.decode(&results)) {
 
-        switch(results.value){
-          case 0xFFA25D:
-          keyPress(0);
-          // Serial.println("1");
-          break;
-          case 0xFF629D:
-          keyPress(1);
-          // Serial.println("2");
-          break;
-          case 0xFFE21D:
-          keyPress(2);
-          // Serial.println("3");
-          break;
-          case 0xFF22DD:
-          keyPress(3);
-          // Serial.println("4");
-          break;
-          case 0xFF02FD:
-          keyPress(4);
-          // Serial.println("5");
-          break ;  
-          case 0xFFC23D:
-          keyPress(5);
-          // Serial.println("6");
-          break ;               
-          case 0xFFE01F:
-          keyPress(6);
-          // Serial.println("7");
-          break ;  
-          case 0xFFA857:
-          keyPress(7);
-          // Serial.println("8");
-          break ;  
-          case 0xFF906F:
-          keyPress(8);
-          // Serial.println("9");
-          break ;  
-          case 0xFF6897:
-          keyPress(9);
-          // Serial.println("*");
-          break ;  
-          case 0xFF9867:
-          keyPress(10);
-          // Serial.println("0");
-          break ;
-          case 0xFFB04F:
-          keyPress(11);
-          // Serial.println("#");
-          break ;
-          case 0xFF30CF:
-          Serial.println("Not Used");
-          break ;
-          case 0xFF18E7:
-          Serial.println("Up");
-          break ;
-          case 0xFF7A85:
-          Serial.println("Not Used");
-          break ;
-          case 0xFF10EF:
-          Serial.println("Left");
-          break ;
-          case 0xFF38C7:
-          Serial.println("OK");
-          break ;
-          case 0xFF5AA5:
-          Serial.println("Right");
-          break ;
-          case 0xFF42BD:
-          Serial.println("Not Used");
-          break ;
-          case 0xFF4AB5:
-          Serial.println("Down");
-          break ;
-          case 0xFF52AD:
-          Serial.println("Not Used");
-          break ;      
-        }
-        key_value = results.value;
-        irrecv.resume(); 
+    // if (results.value == 0XFFFFFFFF)
+    //   results.value = key_value;
+
+    switch (results.value) {
+      case 0xFFA25D:
+        keyPress(0);
+        // Serial.println("1");
+        break;
+      case 0xFF629D:
+        keyPress(1);
+        // Serial.println("2");
+        break;
+      case 0xFFE21D:
+        keyPress(2);
+        // Serial.println("3");
+        break;
+      case 0xFF22DD:
+        keyPress(3);
+        // Serial.println("4");
+        break;
+      case 0xFF02FD:
+        keyPress(4);
+        // Serial.println("5");
+        break ;
+      case 0xFFC23D:
+        keyPress(5);
+        // Serial.println("6");
+        break ;
+      case 0xFFE01F:
+        keyPress(6);
+        // Serial.println("7");
+        break ;
+      case 0xFFA857:
+        keyPress(7);
+        // Serial.println("8");
+        break ;
+      case 0xFF906F:
+        keyPress(8);
+        // Serial.println("9");
+        break ;
+      case 0xFF6897:
+        keyPress(9);
+        // Serial.println("*");
+        break ;
+      case 0xFF9867:
+        keyPress(10);
+        // Serial.println("0");
+        break ;
+      case 0xFFB04F:
+        keyPress(11);
+        // Serial.println("#");
+        break ;
+      case 0xFF30CF:
+        Serial.println("Not Used");
+        break ;
+      case 0xFF18E7:
+        Serial.println("Up");
+        break ;
+      case 0xFF7A85:
+        Serial.println("Not Used");
+        break ;
+      case 0xFF10EF:
+        Serial.println("Left");
+        break ;
+      case 0xFF38C7:
+        Serial.println("OK");
+        break ;
+      case 0xFF5AA5:
+        Serial.println("Right");
+        break ;
+      case 0xFF42BD:
+        Serial.println("Not Used");
+        break ;
+      case 0xFF4AB5:
+        Serial.println("Down");
+        break ;
+      case 0xFF52AD:
+        Serial.println("Not Used");
+        break ;
+    }
+    key_value = results.value;
+    irrecv.resume();
   }
 }
 
